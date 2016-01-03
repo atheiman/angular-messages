@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Angular Messages Example</title>
+
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        crossorigin="anonymous">
+  <style>
+    .message {
+      cursor: pointer;
+    }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+
+  <script src="app.js"></script>
+  <script src="../lib/messages.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <center>
+      <h1>Angular Messages</h1>
+
+      <p class="lead">View the code: <a href="https://github.com/atheiman/angular-messages">github.com/atheiman/angular-messages</a></p>
+    </center>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- Message form -->
+        <form ng-controller="FormCtrl">
+          <div class="form-group" ng-init="text = 'Some example message text.'">
+            <label><code>text</code>:</label>
+            <input type="text" class="form-control" ng-model="text">
+          </div>
+
+          <div class="form-group" ng-init="ttl = 3000">
+            <label><code>ttl</code>:</label>
+            <input type="number" class="form-control" ng-model="ttl">
+          </div>
+
+          <code>context</code>:
+          <p ng-init="context = 'warning'">
+            <label class="radio-inline">
+              <input type="radio" ng-model="context" value="success"> success
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="context" value="info"> info
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="context" value="warning"> warning
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="context" value="danger"> danger
+            </label>
+          </p>
+
+          <code>msg</code>:
+          <pre>{{msg() | json}}</pre>
+
+          <input type="submit" class="btn btn-primary" value="Flash message!"
+                 ng-click="callFlashMsg()">
+        </form>
+
+        <!-- Display Messages -->
+        <div ng-controller="MsgCtrl">
+          <div ng-repeat="msg in msgs" id="msg.id" class="message alert" ng-click="removeMsg(msg.id)"
+               ng-class="{'alert-success': msg.context=='success', 'alert-info': msg.context=='info', 'alert-warning': msg.context=='warning', 'alert-danger': msg.context=='danger'}">
+            <span class="glyphicon"
+                  ng-class="{'glyphicon-ok-sign': msg.context=='success', 'glyphicon-info-sign': msg.context=='info', 'glyphicon-warning-sign': msg.context=='warning', 'glyphicon-remove-sign': msg.context=='danger', }" />
+            {{msg.text}} <small>(Click to dismiss)</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Angular Messages explanation -->
+      <div class="col-sm-6">
+      <p>
+        Messages can be submitted to the service from any controller. Message objects are created with three properties:
+      </p>
+      <pre>msgService.flashMsg({text: &lt;str&gt;, ttl: &lt;num&gt;, context: &lt;str&gt;})</pre>
+      <ul>
+        <li>
+          <strong><code>text</code></strong>: <code>str</code>, required -
+          text to be displayed in the message.
+        </li>
+        <li>
+          <strong><code>ttl</code></strong>: <code>num</code>, optional, default: <code>20000</code> -
+          number of milliseconds the message will remain in the <code>MsgCtrl.msgs</code> array.<br/>
+          Messages can also be removed from this array by calling <code>removeMsg(id)</code>.
+        </li>
+        <li>
+          <strong><code>context</code></strong>: <code>str</code> [<code>'success'</code>|<code>'info'</code>|<code>'warning'</code>|<code>'danger'</code>], optional, default: <code>'info'</code> -
+          way of categorizing messages, used in this example to apply Bootstrap css alert classes.
+        </li>
+      </ul>
+      <p>
+        Messages are kept unique with a timestamp (<code>Date.now()</code>) stored on the <code>id</code> property.<br/>
+        If no <code>ttl</code> is given, it will default to
+        There are shortcut methods to create a message of each of the contexts:
+      </p>
+      <pre>msgService.success({text: 'Success msg text.'})
+msgService.info({text: 'Info msg text.'})
+msgService.warning({text: 'Warning msg text.'})
+msgService.danger({text: 'Danger msg text.'})</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</body>
+</html>
