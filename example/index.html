@@ -11,11 +11,6 @@
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
         integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
         crossorigin="anonymous">
-  <style>
-    .message {
-      cursor: pointer;
-    }
-  </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
@@ -71,11 +66,12 @@
 
         <!-- Display Messages -->
         <div ng-controller="MsgCtrl">
-          <div ng-repeat="msg in msgs" id="msg.id" class="message alert" ng-click="removeMsg(msg.id)"
+          <div ng-repeat="msg in msgs" id="msg.id" class="message alert alert-dismissible"
                ng-class="{'alert-success': msg.context=='success', 'alert-info': msg.context=='info', 'alert-warning': msg.context=='warning', 'alert-danger': msg.context=='danger'}">
+            <button class="close" ng-click="removeMsg(msg.id)"><span>&times;</span></button>
             <span class="glyphicon"
-                  ng-class="{'glyphicon-ok-sign': msg.context=='success', 'glyphicon-info-sign': msg.context=='info', 'glyphicon-warning-sign': msg.context=='warning', 'glyphicon-remove-sign': msg.context=='danger', }" />
-            {{msg.text}} <small>(Click to dismiss)</small>
+                  ng-class="{'glyphicon-ok-sign': msg.context=='success', 'glyphicon-info-sign': msg.context=='info', 'glyphicon-warning-sign': msg.context=='warning', 'glyphicon-remove-sign': msg.context=='danger'}" />
+            {{msg.text}}
           </div>
         </div>
       </div>
